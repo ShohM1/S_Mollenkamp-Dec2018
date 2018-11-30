@@ -9,7 +9,7 @@ public class FracCalcExtra {
         System.out.println("Enter a mathematical expression that you want to calculate (e.g. 1_2/3 + 4)");
         String input = console.nextLine();//take input
         while(input!="quit") {
-        	System.out.println(produceAnswer(input));//run produce answer and print out
+        	System.out.println(runMultiple(input));//run multiple produce answers and print out
         	System.out.println("Enter another mathematical expression or type \"quit\", if you want to quit.");
         	input = console.nextLine();//get the next input
         } 
@@ -27,19 +27,26 @@ public class FracCalcExtra {
     public static String runMultiple(String input) {
     	String[] separation = input.split(" ");//split between operands and operators
     	int calcNow = 1;//what to calculate
-    	for(int i=separation.length; i>=1; i-=2)
-    		for(int j=1; j<separation.length; j+=2) {
-    			if(separation[j].equals("/")||separation[j].equals("*")) {//if there's multiply or divide
-    				calcNow = j;
-    				j+=separation.length;//end the loop when found
-    			}
+    	for(int)
+    	for(int j=1; j<separation.length; j+=2) {
+    		if(separation[j].equals("/")||separation[j].equals("*")) {//if there's multiply or divide
+    			calcNow = j;
+    			j+=separation.length;//end the loop when found
     		}
-    		String[] toCalculate = {separation[calcNow-1], separation[calcNow], separation[calcNow+1]};
-    		String answer1 = produceAnswer(toCalculate);//answer of the first one
-    		for(int k=0; k<separation.length; k++) {
-    			separation[k] = sep
+    	}
+    	String[] toCalculate = {separation[calcNow-1], separation[calcNow], separation[calcNow+1]};
+    	String answer1 = produceAnswer(toCalculate);//answer of the first one
+    	for(int k=0; k<separation.length; k++) {//move around the values in the array
+    		separation[k] = separation[k];
+    		if(k==calcNow-1) {
+    			separation[k] = answer1;
+    		}else if(separation.length-k<3) {
+    			separation[k] = " ";
+    		}else if(Math.abs(k-calcNow)<=1) {
+    			separation[k] = separation[k+1];
     		}
-    	
+    	}
+    	return separation[0];
     }
     public static String produceAnswer(String[] input)
     { 
