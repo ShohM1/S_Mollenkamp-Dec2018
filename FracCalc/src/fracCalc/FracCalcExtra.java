@@ -14,7 +14,6 @@ public class FracCalcExtra {
         	input = console.nextLine();//get the next input
         } 
         console.close();
-
     }
     
     // ** IMPORTANT ** DO NOT DELETE THIS FUNCTION.  This function will be used to test your code
