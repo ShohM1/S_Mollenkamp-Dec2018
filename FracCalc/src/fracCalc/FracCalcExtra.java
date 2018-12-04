@@ -26,24 +26,27 @@ public class FracCalcExtra {
     //      e.g. return ==> "1_1/4"
     public static String runMultiple(String input) {
     	String[] separation = input.split(" ");//split between operands and operators
-    	int calcNow = 1;//what to calculate
-    	for(int)
-    	for(int j=1; j<separation.length; j+=2) {
-    		if(separation[j].equals("/")||separation[j].equals("*")) {//if there's multiply or divide
-    			calcNow = j;
-    			j+=separation.length;//end the loop when found
+    	
+    	for(int i=0; i<(separation.length-1)/2; i++) {
+    		int calcNow = 1;//what to calculate
+    		for(int j=1; j<separation.length; j+=2) {
+    			
+    			if(separation[j].equals("/")||separation[j].equals("*")) {//if there's multiply or divide
+    				calcNow = j;
+    				j+=separation.length;//end the loop when found
+    			}
     		}
-    	}
-    	String[] toCalculate = {separation[calcNow-1], separation[calcNow], separation[calcNow+1]};
-    	String answer1 = produceAnswer(toCalculate);//answer of the first one
-    	for(int k=0; k<separation.length; k++) {//move around the values in the array
-    		separation[k] = separation[k];
-    		if(k==calcNow-1) {
-    			separation[k] = answer1;
-    		}else if(separation.length-k<3) {
-    			separation[k] = " ";
-    		}else if(Math.abs(k-calcNow)<=1) {
-    			separation[k] = separation[k+1];
+    		String[] toCalculate = {separation[calcNow-1], separation[calcNow], separation[calcNow+1]};
+    		String answer1 = produceAnswer(toCalculate);//answer of the first one
+    		for(int k=0; k<separation.length; k++) {//move around the values in the array
+    			separation[k] = separation[k];
+    			if(k==calcNow-1) {
+    				separation[k] = answer1;
+    			}else if(separation.length-k<3) {
+    				separation[k] = "";
+    			}else if(k-calcNow>=0) {
+    				separation[k] = separation[k+2];
+    			}
     		}
     	}
     	return separation[0];
@@ -56,7 +59,7 @@ public class FracCalcExtra {
         int[] calculated = operate(splac1, splac2, input[1]);//get the answer from operating two improper fractions
         String answer = calculated[0]/calculated[1] + "_" + Math.abs(calculated[0]%calculated[1]) +"/" + calculated[1];//back into string with mixed
         if(calculated[0]%calculated[1]==0) {
-        	 answer = calculated[0]/calculated[1]+"";//take out fraction if answer is whole
+        	answer = calculated[0]/calculated[1]+"";//take out fraction if answer is whole
         } else if(calculated[0]/calculated[1]==0) {
         	answer = calculated[0]%calculated[1] + "/" + calculated[1];//take out 0_
         }

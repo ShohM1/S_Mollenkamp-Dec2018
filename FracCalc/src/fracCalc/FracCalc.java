@@ -6,15 +6,14 @@ public class FracCalc {
     public static void main(String[] args) 
     {
         Scanner console = new Scanner(System.in);
-        System.out.println("Enter a mathematical expression that you want to calculate like 1_2/3 + 4.");
+        System.out.println("Enter a mathematical expression that you want to calculate (e.g. 1_2/3 + 4)");
         String input = console.nextLine();//take input
         while(input!="quit") {
-        	System.out.println(produceAnswer(input));//run produce answer and print out
+        	System.out.println(produceAnswer(input));//run multiple produce answers and print out
         	System.out.println("Enter another mathematical expression or type \"quit\", if you want to quit.");
         	input = console.nextLine();//get the next input
         } 
         console.close();
-
     }
     
     // ** IMPORTANT ** DO NOT DELETE THIS FUNCTION.  This function will be used to test your code
@@ -25,16 +24,42 @@ public class FracCalc {
     //        
     // The function should return the result of the fraction after it has been calculated
     //      e.g. return ==> "1_1/4"
-    public static String produceAnswer(String input)
+    public static String produceAnswer(String input) {
+    	String[] separation = input.split(" ");//split between operands and operators
+    	
+    	for(int i=0; i<(separation.length-1)/2; i++) {
+    		int calcNow = 1;//what to calculate
+    		//for(int j=1; j<separation.length; j+=2) {
+    			
+    			//if(separation[j].equals("/")||separation[j].equals("*")) {//if there's multiply or divide
+    				//calcNow = j;
+    				//j+=separation.length;//end the loop when found
+    			//}
+    		//}
+    		String[] toCalculate = {separation[calcNow-1], separation[calcNow], separation[calcNow+1]};
+    		String answer1 = eachCalc(toCalculate);//answer of the first one
+    		for(int k=0; k<separation.length; k++) {//move around the values in the array
+    			separation[k] = separation[k];
+    			if(k==calcNow-1) {
+    				separation[k] = answer1;
+    			}else if(separation.length-k<3) {
+    				separation[k] = "";
+    			}else if(k-calcNow>=0) {
+    				separation[k] = separation[k+2];
+    			}
+    		}
+    	}
+    	return separation[0];
+    }
+    public static String eachCalc(String[] input)
     { 
         // TODO: Implement this function to produce the solution to the input
-        String[] separation = input.split(" ");//split between operands and operators
-        int[] splac1 = inToFrac(separation[0]);//improper fraction of the first operand
-        int[] splac2 = inToFrac(separation[2]);//improper fraction of the second operand
-        int[] calculated = operate(splac1, splac2, separation[1]);//get the answer from operating two improper fractions
+        int[] splac1 = inToFrac(input[0]);//improper fraction of the first operand
+        int[] splac2 = inToFrac(input[2]);//improper fraction of the second operand
+        int[] calculated = operate(splac1, splac2, input[1]);//get the answer from operating two improper fractions
         String answer = calculated[0]/calculated[1] + "_" + Math.abs(calculated[0]%calculated[1]) +"/" + calculated[1];//back into string with mixed
         if(calculated[0]%calculated[1]==0) {
-        	 answer = calculated[0]/calculated[1]+"";//take out fraction if answer is whole
+        	answer = calculated[0]/calculated[1]+"";//take out fraction if answer is whole
         } else if(calculated[0]/calculated[1]==0) {
         	answer = calculated[0]%calculated[1] + "/" + calculated[1];//take out 0_
         }
@@ -110,7 +135,6 @@ public class FracCalc {
 			divisor=num2;
 		}else{
 			while(num1%divisor!=0||num2%divisor!=0){
-		
 			divisor--;
 			}
 		}
