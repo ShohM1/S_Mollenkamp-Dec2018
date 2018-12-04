@@ -25,18 +25,32 @@ public class FracCalc {
     // The function should return the result of the fraction after it has been calculated
     //      e.g. return ==> "1_1/4"
     public static String produceAnswer(String input) {
+    	//if(input.contains("/0")){
+    	//	return "ERROR: Cannot divide by zero.";//check if dividing by 0
+    	//}
     	String[] separation = input.split(" ");//split between operands and operators
-    	
     	for(int i=0; i<(separation.length-1)/2; i++) {
     		int calcNow = 1;//what to calculate
     		//for(int j=1; j<separation.length; j+=2) {
-    			
     			//if(separation[j].equals("/")||separation[j].equals("*")) {//if there's multiply or divide
     				//calcNow = j;
     				//j+=separation.length;//end the loop when found
     			//}
     		//}
+    		//String checkValid = separation[calcNow].replace("-","+").replace("*","+").replace("/", "+");
+    		//String checkValid2 = separation[calcNow + 1].replace("1","0").replace("2","0").replace("3","0").replace("4","0").replace("5","0").replace("6","0").replace("7","0").replace("8","0").replace("9","0").replace("/","0").replace("_","0");
+    		//for(int k=0; k<separation[calcNow + 1].length();k++) {
+    		//	if(checkValid2.charAt(k)!='0') {
+    		//		checkValid = "notWork";
+    		//	}
+    		//}
+    		//if(!checkValid.equals("+")||!checkValid2.equals("0")) {
+    		//	return "ERROR: Input is in an invalid format.";//if it's not proper operator, error
+    		//}
     		String[] toCalculate = {separation[calcNow-1], separation[calcNow], separation[calcNow+1]};
+    		if(toCalculate[1].equals("/")&&toCalculate[2].equals("0")) {
+    			return "ERROR: Cannot divide by zero";
+    		}
     		String answer1 = eachCalc(toCalculate);//answer of the first one
     		for(int k=0; k<separation.length; k++) {//move around the values in the array
     			separation[k] = separation[k];

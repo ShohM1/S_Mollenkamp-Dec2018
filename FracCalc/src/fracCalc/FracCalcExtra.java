@@ -3,41 +3,40 @@ import java.util.*;
 
 public class FracCalcExtra {
 
-    public static void main(String[] args) 
-    {
+    public static void main(String[] args) {
         Scanner console = new Scanner(System.in);
         System.out.println("Enter a mathematical expression that you want to calculate (e.g. 1_2/3 + 4)");
         String input = console.nextLine();//take input
         while(input!="quit") {
-        	System.out.println(runMultiple(input));//run multiple produce answers and print out
+        	System.out.println(produceAnswer(input));//run multiple produce answers and print out
         	System.out.println("Enter another mathematical expression or type \"quit\", if you want to quit.");
         	input = console.nextLine();//get the next input
         } 
         console.close();
     }
     
-    // ** IMPORTANT ** DO NOT DELETE THIS FUNCTION.  This function will be used to test your code
-    // This function takes a String 'input' and produces the result
-    //
-    // input is a fraction string that needs to be evaluated.  For your program, this will be the user input.
-    //      e.g. input ==> "1/2 + 3/4"
-    //        
-    // The function should return the result of the fraction after it has been calculated
-    //      e.g. return ==> "1_1/4"
-    public static String runMultiple(String input) {
+    public static String produceAnswer(String input) {
+    	if(input.contains("/0")){
+    		return "ERROR: Cannot divide by zero.";//check if dividing by 0
+    	}
     	String[] separation = input.split(" ");//split between operands and operators
-    	
     	for(int i=0; i<(separation.length-1)/2; i++) {
     		int calcNow = 1;//what to calculate
     		for(int j=1; j<separation.length; j+=2) {
-    			
+    			String checkValid = separation[j].replace("-","+").replace("*","+").replace("/", "+");
+    			if(!checkValid.equals("+")) {
+    				return "ERROR: Input is an invalid format.";
+    			}
     			if(separation[j].equals("/")||separation[j].equals("*")) {//if there's multiply or divide
     				calcNow = j;
     				j+=separation.length;//end the loop when found
     			}
     		}
     		String[] toCalculate = {separation[calcNow-1], separation[calcNow], separation[calcNow+1]};
-    		String answer1 = produceAnswer(toCalculate);//answer of the first one
+    		if(toCalculate[2].equals("0")) {
+    			return "ERROR: Cannot divide by zero";
+    		}
+    		String answer1 = eachCalc(toCalculate);//answer of the first one
     		for(int k=0; k<separation.length; k++) {//move around the values in the array
     			separation[k] = separation[k];
     			if(k==calcNow-1) {
@@ -51,10 +50,9 @@ public class FracCalcExtra {
     	}
     	return separation[0];
     }
-    public static String produceAnswer(String[] input)
-    { 
-        // TODO: Implement this function to produce the solution to the input
-        int[] splac1 = inToFrac(input[0]);//improper fraction of the first operand
+    
+    public static String eachCalc(String[] input) { 
+    	int[] splac1 = inToFrac(input[0]);//improper fraction of the first operand
         int[] splac2 = inToFrac(input[2]);//improper fraction of the second operand
         int[] calculated = operate(splac1, splac2, input[1]);//get the answer from operating two improper fractions
         String answer = calculated[0]/calculated[1] + "_" + Math.abs(calculated[0]%calculated[1]) +"/" + calculated[1];//back into string with mixed
@@ -66,7 +64,6 @@ public class FracCalcExtra {
         return answer;
     }
 
-    // TODO: Fill in the space below with any helper methods that you think you will need
     public static int[] inToFrac(String operand) {
     	int slack = operand.indexOf("/");//checking for fraction
     	int undack = operand.indexOf("_");//checking for whole
@@ -99,7 +96,6 @@ public class FracCalcExtra {
     	return impropFrac;
     }
     
-    
     public static int[] operate(int[] frac1, int[] frac2, String operator) {
     	int[] answer = new int[2];
     	if(operator.equals("+")==true||operator.equals("-")==true) {//if it's + or -
@@ -126,6 +122,7 @@ public class FracCalcExtra {
     	answer[1]/=greatestCF;
     	return answer;
     }
+    
     public static int gcf(int num1, int num2) {
 		//finds greatest common factor by checking the divisibility of both values
 		num1= (int) Math.abs(num1);
