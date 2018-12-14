@@ -8,7 +8,7 @@ public class FracCalc {
         Scanner console = new Scanner(System.in);
         System.out.println("Enter a mathematical expression that you want to calculate (e.g. 1_2/3 + 4)");
         String input = console.nextLine();//take input
-        while(input!="quit") {
+        while(!input.equals("quit")) {
         	System.out.println(produceAnswer(input));//run multiple produce answers and print out
         	System.out.println("Enter another mathematical expression or type \"quit\", if you want to quit.");
         	input = console.nextLine();//get the next input
@@ -23,21 +23,23 @@ public class FracCalc {
     	String[] separation = input.split(" ");//split between operands and operators
     	for(int i=0; i<(separation.length-1)/2; i++) {
     		int calcNow = 1;//what to calculate
-    		for(int j=1; j<separation.length; j+=2) {
-    			if(separation[j].equals("/")||separation[j].equals("*")) {//if there's multiply or divide
-    				calcNow = j;
-    				j+=separation.length;//end the loop when found
-    			}
-    		}
+    		//for(int j=1; j<separation.length; j+=2) {
+    		//	if(separation[j].equals("/")||separation[j].equals("*")) {//if there's multiply or divide
+    		//		calcNow = j;j
+    		//		j+=separation.length;//end the loop when found
+    		//	}
+    		//}
     		String checkValid = separation[calcNow].replace("-","+").replace("*","+").replace("/", "+");
-    		String checkValid2 = separation[calcNow + 1].replace("1","0").replace("2","0").replace("3","0").replace("4","0").replace("5","0").replace("6","0").replace("7","0").replace("8","0").replace("9","0").replace("/","").replace("_","").replace("-","");
-    		for(int k=0; k<checkValid2.length();k++) {
-    			if(checkValid2.charAt(k)!='0') {
+    		for(int k=-1; k<=1; k+=2) {
+    			String checkValid2 = separation[calcNow + k].replace("1","0").replace("2","0").replace("3","0").replace("4","0").replace("5","0").replace("6","0").replace("7","0").replace("8","0").replace("9","0").replace("/","").replace("_","").replace("-","");
+    			for(int l=0; l<checkValid2.length();l++) {
+    				if(checkValid2.charAt(l)!='0') {//checking if the input is just numbers,"-", "/", or "_"
+    					checkValid = "notWork";
+    				}
+    			}
+    			if(checkValid2.equals("")) {//checking if it's not only "-","/", or "_"
     				checkValid = "notWork";
     			}
-    		}
-    		if(checkValid2.equals("")) {
-				checkValid = "notWork";
     		}
     		if(!checkValid.equals("+")) {
     			return "ERROR: Input is in an invalid format.";//if it's not proper operator, error
@@ -62,7 +64,6 @@ public class FracCalc {
     }
     public static String eachCalc(String[] input)
     { 
-        // TODO: Implement this function to produce the solution to the input
         int[] splac1 = inToFrac(input[0]);//improper fraction of the first operand
         int[] splac2 = inToFrac(input[2]);//improper fraction of the second operand
         int[] calculated = operate(splac1, splac2, input[1]);//get the answer from operating two improper fractions
@@ -75,7 +76,6 @@ public class FracCalc {
         return answer;
     }
 
-    // TODO: Fill in the space below with any helper methods that you think you will need
     public static int[] inToFrac(String operand) {
     	int slack = operand.indexOf("/");//checking for fraction
     	int undack = operand.indexOf("_");//checking for whole
@@ -111,14 +111,14 @@ public class FracCalc {
     
     public static int[] operate(int[] frac1, int[] frac2, String operator) {
     	int[] answer = new int[2];
-    	if(operator.equals("+")==true||operator.equals("-")==true) {//if it's + or -
-    		if(operator.equals("-")==true) {
+    	if(operator.equals("+")||operator.equals("-")) {//if it's + or -
+    		if(operator.equals("-")) {
     			frac2[0] = -frac2[0];//make the second improper fraction negative if minus
     		}
     		answer[1] = frac1[1]*frac2[1];//denominator multiplied
     		answer[0] = frac1[0]*frac2[1] + frac2[0]*frac1[1];//add numerators multiplied by denom of other
-    	}else if(operator.equals("*")==true||operator.equals("/")==true){//if it's * or /
-    		if(operator.equals("/")==true) {
+    	}else if(operator.equals("*")||operator.equals("/")){//if it's * or /
+    		if(operator.equals("/")) {
     			int temp = frac2[1];
     			frac2[1] = frac2[0];
     			frac2[0] = temp;//switch numerator and denominator
@@ -137,15 +137,11 @@ public class FracCalc {
     }
     public static int gcf(int num1, int num2) {
 		//finds greatest common factor by checking the divisibility of both values
-		num1= (int) Math.abs(num1);
-		num2= (int) Math.abs(num2);
-		int divisor=num1;
-		if(num1==0) {
-			divisor=num2;
-		}else{
-			while(num1%divisor!=0||num2%divisor!=0){
-			divisor--;
-			}
+		num1= Math.abs(num1);
+		num2= Math.abs(num2);
+		int divisor=num2;
+		while(num1%divisor!=0||num2%divisor!=0){
+		divisor--;
 		}
 		return divisor;
     }

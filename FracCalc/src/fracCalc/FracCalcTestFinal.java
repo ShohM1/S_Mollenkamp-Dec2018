@@ -114,7 +114,7 @@ public class FracCalcTestFinal
     
     
     
-    @Test public void testMultiplicationCombined1() {   assertEquals("1065_115/168", FracCalc.produceAnswer("-32_75/16 * -27_43/21"));}
+    @Test public void testMultiplicationCombined1() {assertEquals("1065_115/168", FracCalc.produceAnswer("-32_75/16 * -27_43/21"));}
     @Test public void testMultiplicationCombined2() {assertEquals("-15_67/943", FracCalc.produceAnswer("1_27/41 * -3_140/23"));}
     @Test public void testMultiplicationCombined3() {assertEquals("4_2/3", FracCalc.produceAnswer("3_2/4 * 4/3"));}
     
