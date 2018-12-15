@@ -3,13 +3,15 @@ import java.util.*;
 
 public class FracCalc {
 
-    public static void main(String[] args) 
-    {
+    public static void main(String[] args) {
         Scanner console = new Scanner(System.in);
         System.out.println("Enter a mathematical expression that you want to calculate (e.g. 1_2/3 + 4)");
         String input = console.nextLine();//take input
+        String ans = "1";
         while(!input.equals("quit")) {
-        	System.out.println(produceAnswer(input));//run multiple produce answers and print out
+        	input = input.replaceAll("ans", ans);
+        	ans = produceAnswer(input);//run multiple produce answers
+        	System.out.println(ans);//print out the answer
         	System.out.println("Enter another mathematical expression or type \"quit\", if you want to quit.");
         	input = console.nextLine();//get the next input
         } 
@@ -25,7 +27,7 @@ public class FracCalc {
     		int calcNow = 1;//what to calculate
     		//for(int j=1; j<separation.length; j+=2) {
     		//	if(separation[j].equals("/")||separation[j].equals("*")) {//if there's multiply or divide
-    		//		calcNow = j;j
+    		//		calcNow = j;
     		//		j+=separation.length;//end the loop when found
     		//	}
     		//}
