@@ -140,6 +140,9 @@ public class FracCalc {
 		num1= Math.abs(num1);
 		num2= Math.abs(num2);
 		int divisor=num2;
+		if(num1<num2 && num1!=0) {
+			divisor = num1;
+		}
 		while(num1%divisor!=0||num2%divisor!=0){
 		divisor--;
 		}
